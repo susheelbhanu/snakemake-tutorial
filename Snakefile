@@ -22,7 +22,8 @@ rule all:
         expand(os.path.join(RESULTS_DIR, "emboss/Cluster_{sample}_consensus.fa"), sample=SAMPLES),
         expand(os.path.join(RESULTS_DIR, "diamond/Cluster_{sample}.tsv"), sample=SAMPLES),
         expand(os.path.join(RESULTS_DIR, "Stats/Cluster_{sample}_len_GC.txt"), sample=SAMPLES),
-        expand(os.path.join(RESULTS_DIR, "Pairwise_identity/Cluster_{sample}.txt"), sample=SAMPLES)
+        expand(os.path.join(RESULTS_DIR, "Pairwise_identity/Cluster_{sample}.txt"), sample=SAMPLES),
+        expand(os.path.join(RESULTS_DIR, "Stats/Cluster_{sample}_R_summary.txt"), sample=SAMPLES)
 
 ################################
 rule infoseq:
@@ -130,3 +131,17 @@ rule stats:
         
         # writing Stats to file
         stat.to_csv(output[0], sep='\t', index=True, header=True)
+
+rule PID_summary:
+    input:
+        PID=rules.identity.output
+    output:
+        summary=os.path.join(RESULTS_DIR, "Stats/Cluster_{sample}_R_summary.txt")
+    conda:
+        os.path.join("envs/renv.yaml")
+    log:
+        os.path.join(RESULTS_DIR, "logs/Cluster_{sample}.Rstats.log")
+    message:
+        "Estimating Mean, SD of PID (percent identity) for Cluster_{wildcards.sample}"
+    script:
+        "scripts/pid_summary.R"
