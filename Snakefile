@@ -110,7 +110,7 @@ rule identity:
 #########
 rule stats:
     input:
-        rules.info.output,
+        rules.infoseq.output,
         rules.identity.output
     output:
         os.path.join(RESULTS_DIR, "Stats/Cluster_{sample}_len_GC.txt")
