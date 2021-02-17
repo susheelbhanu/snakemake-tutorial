@@ -1,0 +1,13 @@
+# Define the sample names
+# samples: ["10", "50", "70"]
+
+# Working directory path
+data_dir: "/mnt/md1200/sbusi/snakemake-tutorial/data"
+
+# Path to results directory
+results_dir: "/mnt/md1200/sbusi/snakemake-output/results"
+
+# Path to DIAMOND database
+diamond:
+  db: "/mnt/esb-storage-01/nr_trembl/nr_uniprot_trembl.dmnd"
+  threads: 24
